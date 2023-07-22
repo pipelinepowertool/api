@@ -10,7 +10,7 @@ pipeline {
     stage('Maven build artifact') {
       steps {
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
-             sh "mvn -U package -Dnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true"
+             sh "mvn -s $MAVEN_SETTINGS -U package -Dnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true"
         }
         withAWS(region:'eu-north-1',credentials:'jenkins-s3') {
           sh 'echo "Uploading content with AWS creds"'
