@@ -14,6 +14,9 @@ quarkus:
           mutiny: true
   native:
     container-build: true
+    additional-build-args: --initialize-at-run-time=org.apache.http.impl.auth.NTLMEngineImpl
+    resources:
+      includes: certs/http_ca.crt
   container-image:
     build: true
 

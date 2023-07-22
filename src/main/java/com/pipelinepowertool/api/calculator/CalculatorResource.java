@@ -18,7 +18,7 @@ public class CalculatorResource {
 
     @GET
     @Produces({"application/json"})
-    public Uni<PowerUsageResponse> getAllFromJobAndBuild(
+    public Uni<PowerUsageResponse> getUsage(
             @RestQuery("country") String country,
             @RestQuery("price") Float price,
             @RestQuery("job") String job,
