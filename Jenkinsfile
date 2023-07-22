@@ -12,10 +12,8 @@ pipeline {
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
              sh "mvn -s $MAVEN_SETTINGS -U package -Dnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true"
         }
-        withAWS(region:'eu-north-1',credentials:'jenkins-s3') {
-          sh 'echo "Uploading content with AWS creds"'
-          s3Upload(file:'./target/api-1.0-runner', bucket:'energy-reader', acl: 'PublicRead')
-        }
+        sh "docker build -f src/main/docker/Dockerfile.native-micro -t sdenboer/pipelinepowertool-api ."
+        sh "docker push sdenboer/pipelinepowertool-api"
       }
     }
   }
