@@ -1,7 +1,7 @@
 pipeline {
   agent {
       docker {
-        image 'maven:3.9-eclipse-temurin-17-alpine'
+        image 'sdenboer/pipelinepowertool-maven-alpine-dind'
         args '-v $HOME/.m2:/root/.m2:z -v /var/run/docker.sock:/var/run/docker.sock -u root'
         reuseNode true
       }
