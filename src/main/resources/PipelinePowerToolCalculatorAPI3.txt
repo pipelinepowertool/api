@@ -1,0 +1,175 @@
+#openapi: 3.0.3
+#info:
+#  title: Swagger Pipeline Power API - OpenAPI 3.0
+#  description: |-
+#    This is the specification of the supported endpoints in the Pipeline Power API
+#  contact:
+#    email: support@madebysven.com
+#  license:
+#    name: Apache 2.0
+#    url: http://www.apache.org/licenses/LICENSE-2.0.html
+#  version: 1.0
+#paths:
+#  /calculator/jenkins:
+#    get:
+#      operationId: getAll
+#      tags:
+#        - pipelinePowerToolCalculator
+#      summary: Finds power stats of all pipelines
+#      responses:
+#        '200':
+#          description: Successful operation
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/PowerUsageResponse'
+#        '403':
+#          description: Access denied
+#        '500':
+#          description: Problem in server
+#  /calculator/jenkins/job/{job}:
+#    get:
+#      operationId: getAllFromJob
+#      tags:
+#        - pipelinePowerToolCalculator
+#      parameters:
+#        - $ref: "#/components/parameters/job"
+#      summary: Finds power stats of a specific pipeline
+#      responses:
+#        '200':
+#          description: Successful operation
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/PowerUsageResponse'
+#        '403':
+#          description: Access denied
+#        '500':
+#          description: Problem in server
+#  /calculator/jenkins/job/{job}/build/${build}:
+#    get:
+#      operationId: getAllFromJobAndBuild
+#      tags:
+#        - pipelinePowerToolCalculator
+#      parameters:
+#        - $ref: "#/components/parameters/job"
+#        - $ref: "#/components/parameters/build"
+#      summary: Finds power stats of a specific build in a specific pipeline
+#      responses:
+#        '200':
+#          description: Successful operation
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/PowerUsageResponse'
+#        '403':
+#          description: Access denied
+#        '500':
+#          description: Problem in server
+#  /calculator/jenkins/job/{job}/branch/${branch}:
+#    get:
+#      operationId: getAllFromJobAndBranch
+#      tags:
+#        - pipelinePowerToolCalculator
+#      parameters:
+#        - $ref: "#/components/parameters/job"
+#        - $ref: "#/components/parameters/branch"
+#      summary: Finds power stats of a specific branch in a specific pipeline
+#      responses:
+#        '200':
+#          description: Successful operation
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/PowerUsageResponse'
+#        '403':
+#          description: Access denied
+#        '500':
+#          description: Problem in server
+#  /calculator/jenkins/job/{job}/branch/${branch}/build/{build}:
+#    get:
+#      operationId: getAllFromJobAndBranchAndBuild
+#      tags:
+#        - pipelinePowerToolCalculator
+#      parameters:
+#        - $ref: "#/components/parameters/job"
+#        - $ref: "#/components/parameters/branch"
+#        - $ref: "#/components/parameters/build"
+#      summary: Finds power stats of a specific build in a specific branch in a specific pipeline
+#      responses:
+#        '200':
+#          description: Successful operation
+#          content:
+#            application/json:
+#              schema:
+#                type: object
+#                items:
+#                  $ref: '#/components/schemas/PowerUsageResponse'
+#        '403':
+#          description: Access denied
+#        '500':
+#          description: Problem in server
+#
+#components:
+#  parameters:
+#    job:
+#      in: path
+#      name: job
+#      required: true
+#      schema:
+#        type: string
+#      description: The name of the pipeline
+#      example: pipeline1
+#    branch:
+#      in: path
+#      name: branch
+#      required: true
+#      schema:
+#        type: string
+#      description: The branch of the pipeline job
+#      example: master
+#    build:
+#      in: path
+#      name: build
+#      required: true
+#      schema:
+#        type: integer
+#      description: The build of the pipeline job
+#      example: 1
+#  schemas:
+#    PowerUsageResponse:
+#      type: object
+#      properties:
+#        powerUsageW:
+#          description: Power Usage in Watts
+#          type: number
+#          format: float
+#          example: 100.00
+#        powerUsageKwh:
+#          description: Power Usage in Kilowatt-hour
+#          type: number
+#          format: float
+#          example: 10.00
+#        co2ProducedTotalGr:
+#          description: Total CO2 Produced in grams
+#          type: integer
+#          format: int64
+#          example: 2331
+#        co2ProducedPerRunGr:
+#          description: CO2 Produced per run in grams
+#          type: integer
+#          format: int64
+#          example: 2331
+#        cpuUtilization:
+#          description: Average CPU Utilization
+#          type: number
+#          format: float
+#          example: 21.00
+#        pipelineRuns:
+#          description: Amount of pipeline runs
+#          type: integer
+#          format: int64
+#        runtimeSeconds:
+#          description: Runtime of selected pipeline(s) in seconds
+#          type: number
+#          format: int64

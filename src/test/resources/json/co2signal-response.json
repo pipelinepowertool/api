@@ -1,0 +1,13 @@
+{
+  "_disclaimer": "This data is the exclusive property of Electricity Maps and/or related parties. If you're in doubt about your rights to use this data, please contact api@co2signal.com",
+  "status": "ok",
+  "countryCode": "NL",
+  "data": {
+    "datetime": "2023-07-20T09:00:00.000Z",
+    "carbonIntensity": 293,
+    "fossilFuelPercentage": 44.51
+  },
+  "units": {
+    "carbonIntensity": "gCO2eq/kWh"
+  }
+}

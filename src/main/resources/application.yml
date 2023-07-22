@@ -1,0 +1,32 @@
+quarkus:
+  jackson:
+
+  log:
+    file:
+      enable: true
+      path: application.log
+      level: ALL
+  openapi-generator:
+    codegen:
+      spec:
+        PipelinePowerToolCalculatorAPI_yml:
+          base-package: com.pipelinepowertool.api
+          mutiny: true
+  native:
+    container-build: true
+  container-image:
+    build: true
+
+api:
+  elasticsearch:
+    username: elastic
+    password:  ${PPT_ELASTIC_PASS}
+    host:  ${PPT_ELASTIC_HOST}
+    port: 9200
+    httpScheme: https
+    certificate: certs/http_ca.crt
+
+carbon-api:
+  token: ${CARBON_API_TOKEN}
+  baseUri: https://api.co2signal.com/v1/
+

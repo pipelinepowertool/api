@@ -1,0 +1,104 @@
+openapi: 3.0.3
+info:
+  title: Swagger Pipeline Power API - OpenAPI 3.0
+  description: |-
+    This is the specification of the supported endpoints in the Pipeline Power API
+  contact:
+    email: support@madebysven.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: "1.0"
+paths:
+  /calculator/jenkins:
+    get:
+      summary: Finds power stats of all pipelines
+      parameters:
+        - $ref: "#/components/parameters/job"
+        - $ref: "#/components/parameters/branch"
+        - $ref: "#/components/parameters/build"
+        - $ref: "#/components/parameters/country"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PowerUsageResponse'
+        '403':
+          description: Access denied
+        '500':
+          description: Problem in server
+
+components:
+  parameters:
+    job:
+      in: query
+      name: job
+      schema:
+        type: string
+      description: The name of the pipeline
+      example: pipeline1
+    branch:
+      in: query
+      name: branch
+      schema:
+        type: string
+      description: The branch of the pipeline job
+      example: master
+    build:
+      in: query
+      name: build
+      schema:
+        type: integer
+      description: The build of the pipeline job
+      example: 1
+    country:
+      in: query
+      name: country
+      schema:
+        type: string
+      description: The country code where the pipeline is hosted
+      example: NL
+    price:
+      in: query
+      name: price
+      schema:
+        type: number
+        format: float
+      description: The price per kWh
+      example: 0.42
+  schemas:
+    PowerUsageResponse:
+      type: object
+      properties:
+        powerUsageKwh:
+          description: Power Usage in Kilowatt-hour
+          type: string
+        co2ProducedTotalGr:
+          description: Total CO2 Produced in grams
+          type: string
+        priceTotal:
+          description: Cost of pipeline up until now
+          type: string
+        co2ProducingPerRunGr:
+          description: CO2 Produced per run in grams
+          type: string
+        pricePerRun:
+          description: Cost of pipeline per run
+          type: string
+        co2ProducingPerHourGr:
+          description: CO2 Produced per hour in grams
+          type: string
+        pricePerHour:
+          description: Cost of pipeline per hour
+          type: string
+        cpuUtilization:
+          description: Average CPU Utilization
+          type: string
+        pipelineRuns:
+          description: Amount of pipeline runs
+          type: string
+        runtimeSeconds:
+          description: Runtime of selected pipeline(s) in seconds
+          type: string
