@@ -23,13 +23,13 @@ quarkus:
 api:
   elasticsearch:
     username: elastic
-    password:  ${PPT_ELASTIC_PASS}
-    host:  ${PPT_ELASTIC_HOST}
+    password: WYVI+2L0ZjI3n11PjTNP
+    host: 192.168.1.163
     port: 9200
     httpScheme: https
     certificate: certs/http_ca.crt
 
 carbon-api:
-  token: ${CARBON_API_TOKEN}
+  token: 8RcbwEEQWLNN1OPSOZ677gUJJwMjwmrM
   baseUri: https://api.co2signal.com/v1/
 
