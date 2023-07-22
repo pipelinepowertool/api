@@ -14,7 +14,7 @@ pipeline {
         }
         withAWS(region:'eu-north-1',credentials:'jenkins-s3') {
           sh 'echo "Uploading content with AWS creds"'
-          s3Upload(file:'./target/api-runner', bucket:'energy-reader', acl: 'PublicRead')
+          s3Upload(file:'./target/api-1.0-runner', bucket:'energy-reader', acl: 'PublicRead')
         }
       }
     }
