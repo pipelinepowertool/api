@@ -124,12 +124,14 @@ public class StepsIT {
     @And("User sees the no carbon footprint")
     public void userSeesTheNoCarbonFootprint() {
         JsonPath jsonPath = context.response.getBody().jsonPath();
-        assertEquals("0", jsonPath.get("powerUsageKwh"));
+        assertEquals("0", jsonPath.get("kwhTotal"));
+        assertEquals("0", jsonPath.get("kwhPerHour"));
+        assertEquals("0", jsonPath.get("kwhPerRun"));
         assertEquals("0", jsonPath.get("pipelineRuns"));
-        assertEquals("0", jsonPath.get("runtimeSeconds"));
-        assertEquals("0", jsonPath.get("co2ProducedTotalGr"));
-        assertEquals("0", jsonPath.get("co2ProducingPerRunGr"));
-        assertEquals("0", jsonPath.get("co2ProducingPerHourGr"));
+        assertEquals("0", jsonPath.get("runtime"));
+        assertEquals("0", jsonPath.get("co2Total"));
+        assertEquals("0", jsonPath.get("co2PerRun"));
+        assertEquals("0", jsonPath.get("co2PerHour"));
         assertEquals("0.00", jsonPath.get("cpuUtilization"));
     }
 
@@ -147,12 +149,15 @@ public class StepsIT {
         BigDecimal co2ProducingPerRunGr = MathUtils.calculateCo2ProducingPerRun(kwhPerPipeline, carbonIntensity);
         BigDecimal co2ProducingPerHourGr = MathUtils.calculateCo2ProducingPerHour(kwh, carbonIntensity);
         JsonPath jsonPath = context.response.getBody().jsonPath();
-        assertEquals(prettyPrintBigDecimal(kwhUsed), jsonPath.get("powerUsageKwh"));
+        assertEquals(prettyPrintBigDecimal(kwhUsed), jsonPath.get("kwhTotal"));
+        assertEquals(prettyPrintBigDecimal(kwh), jsonPath.get("kwhPerHour"));
+        assertEquals(prettyPrintBigDecimal(kwhPerPipeline), jsonPath.get("kwhPerRun"));
+        assertEquals(prettyPrintBigDecimal(kwhUsed), jsonPath.get("kwhTotal"));
         assertEquals(String.valueOf(pipelineRuns), jsonPath.get("pipelineRuns"));
-        assertEquals(String.valueOf(runtimeSeconds), jsonPath.get("runtimeSeconds"));
-        assertEquals(prettyPrintBigDecimal(co2ProducedTotalGr), jsonPath.get("co2ProducedTotalGr"));
-        assertEquals(prettyPrintBigDecimal(co2ProducingPerRunGr), jsonPath.get("co2ProducingPerRunGr"));
-        assertEquals(prettyPrintBigDecimal(co2ProducingPerHourGr), jsonPath.get("co2ProducingPerHourGr"));
+        assertEquals(String.valueOf(runtimeSeconds), jsonPath.get("runtime"));
+        assertEquals(prettyPrintBigDecimal(co2ProducedTotalGr), jsonPath.get("co2Total"));
+        assertEquals(prettyPrintBigDecimal(co2ProducingPerRunGr), jsonPath.get("co2PerRun"));
+        assertEquals(prettyPrintBigDecimal(co2ProducingPerHourGr), jsonPath.get("co2PerHour"));
         assertEquals(prettyPrintUtilization(BigDecimal.valueOf(UTILIZATION)), jsonPath.get("cpuUtilization"));
     }
 
@@ -166,12 +171,14 @@ public class StepsIT {
         BigDecimal carbonIntensity = BigDecimal.valueOf(DEFAULT_CARBON_INTENSITY);
         BigDecimal co2ProducedTotalGr = MathUtils.calculateCo2ProducedTotal(kwhUsed, carbonIntensity);
         JsonPath jsonPath = context.response.getBody().jsonPath();
-        assertEquals(prettyPrintBigDecimal(kwhUsed), jsonPath.get("powerUsageKwh"));
+        assertEquals(prettyPrintBigDecimal(kwhUsed), jsonPath.get("kwhTotal"));
         assertEquals(String.valueOf(pipelineRuns), jsonPath.get("pipelineRuns"));
-        assertEquals(String.valueOf(runtimeSeconds), jsonPath.get("runtimeSeconds"));
-        assertEquals(prettyPrintBigDecimal(co2ProducedTotalGr), jsonPath.get("co2ProducedTotalGr"));
-        assertNull(jsonPath.get("co2ProducingPerRunGr"));
-        assertNull(jsonPath.get("co2ProducingPerHourGr"));
+        assertEquals(String.valueOf(runtimeSeconds), jsonPath.get("runtime"));
+        assertEquals(prettyPrintBigDecimal(co2ProducedTotalGr), jsonPath.get("co2Total"));
+        assertNull(jsonPath.get("co2PerRun"));
+        assertNull(jsonPath.get("co2PerHour"));
+        assertNull(jsonPath.get("kwhPerHour"));
+        assertNull(jsonPath.get("kwhPerRun"));
         assertEquals(prettyPrintUtilization(BigDecimal.valueOf(UTILIZATION)), jsonPath.get("cpuUtilization"));
     }
 

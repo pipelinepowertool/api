@@ -65,6 +65,8 @@ public class CalculatorService {
             BigDecimal co2ProducingPerRunGr = MathUtils.calculateCo2ProducingPerRun(kwhPerPipeline, carbonIntensity);
             BigDecimal co2ProducingPerHourGr = MathUtils.calculateCo2ProducingPerHour(kwh, carbonIntensity);
             powerUsageResponse = powerUsageResponse
+                    .kwhPerHour(prettyPrintBigDecimal(kwh))
+                    .kwhPerRun(prettyPrintBigDecimal(kwhPerPipeline))
                     .co2PerRun(prettyPrintBigDecimal(co2ProducingPerRunGr))
                     .co2PerHour(prettyPrintBigDecimal(co2ProducingPerHourGr));
         }
