@@ -4,7 +4,7 @@ quarkus:
   http:
     ~: true
     cors:
-      headers: Access-Control-Allow-Origin
+      headers: accept, authorization, content-type, x-requested-with
       access-control-allow-credentials: true
       origins: "*"
       methods: GET
