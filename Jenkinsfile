@@ -6,7 +6,7 @@ pipeline {
     stage('Maven build artifact') {
       agent {
             docker {
-              image 'maven:3.9-eclipse-temurin-17-alpine'
+              image 'maven:3.9.3-eclipse-temurin-17'
               reuseNode true
             }
       }
