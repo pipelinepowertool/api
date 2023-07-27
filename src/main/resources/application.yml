@@ -1,4 +1,13 @@
 quarkus:
+  tls:
+    trust-all: true
+  http:
+    ~: true
+    cors:
+      headers: Access-Control-Allow-Origin
+      access-control-allow-credentials: true
+      origins: *
+      methods: GET
   jackson:
 
   log:
