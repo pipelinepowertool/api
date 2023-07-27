@@ -2,9 +2,9 @@ quarkus:
   tls:
     trust-all: true
   http:
-    ~: true
     cors:
-      headers: accept, authorization, content-type, x-requested-with
+      ~: true
+      headers: accept, authorization, content-type, x-requested-with, Access-Control-Allow-Header
       access-control-allow-credentials: true
       origins: "*"
       methods: GET
