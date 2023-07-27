@@ -14,9 +14,7 @@ pipeline {
              sh "mvn -s $MAVEN_SETTINGS -U package -Dnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true"
         }
         sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} docker.io"
-	sh "docker buildx create --name raspberry-builder --platform "linux/arm64,linux/arm/v7,linux/arm/v6" --driver "docker-container" 2>/dev/null"
-        sh "docker buildx use raspberry-builder"
-        sh "docker builx build --platform='linux/arm64' -f src/main/docker/Dockerfile.native-micro -t sdenboer/pipelinepowertool-api ."
+        sh "docker build -f src/main/docker/Dockerfile.native-micro -t sdenboer/pipelinepowertool-api ."
         sh "docker push sdenboer/pipelinepowertool-api"
       }
     }

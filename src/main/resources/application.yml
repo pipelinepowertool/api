@@ -6,7 +6,7 @@ quarkus:
     cors:
       headers: Access-Control-Allow-Origin
       access-control-allow-credentials: true
-      origins: *
+      origins: "*"
       methods: GET
   jackson:
 
