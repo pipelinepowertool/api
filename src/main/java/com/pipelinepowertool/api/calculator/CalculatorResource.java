@@ -20,7 +20,6 @@ public class CalculatorResource {
     @Produces({"application/json"})
     public Uni<PowerUsageResponse> getUsage(
             @RestQuery("country") String country,
-            @RestQuery("price") Float price,
             @RestQuery("job") String job,
             @RestQuery("branch") String branch,
             @RestQuery("build") Long build) {
@@ -28,7 +27,7 @@ public class CalculatorResource {
                 .withJob(job)
                 .withBranch(branch)
                 .withBuildNumber(build).build();
-        return calculatorService.getPowerUsage(jenkinsMetadata, country, price);
+        return calculatorService.getPowerUsage(jenkinsMetadata, country);
     }
 
 }

@@ -49,7 +49,7 @@ public class StepsIT {
                 .pathParams(getQueryParamsFromMetaBuilder())
                 .accept(ContentType.JSON)
                 .when()
-                .get(uriBuilder.toString());
+                .get(uri);
         metadataBuilder = new JenkinsMetadataBuilder();
         uriBuilder = new StringBuilder("calculator/jenkins");
     }
@@ -62,7 +62,7 @@ public class StepsIT {
     @And("User sees the carbon footprint of all pipelines")
     public void userSeesTheCarbonFootprintOfAllPipelines() {
         int pipelineRuns = AMOUNT_OF_PIPELINES * AMOUNT_OF_BRANCHES * AMOUNT_OF_BUILDS;
-        validateResponseAll(pipelineRuns, null);
+        validateResponseAll(pipelineRuns);
     }
 
     @Given("User wants to see the carbon footprint of a specific Jenkins pipeline")
@@ -73,7 +73,7 @@ public class StepsIT {
     @And("User sees the carbon footprint of a specific Jenkins pipeline")
     public void userSeesTheCarbonFootprintOfASpecificJenkinsPipeline() {
         int pipelineRuns = AMOUNT_OF_BRANCHES * AMOUNT_OF_BUILDS;
-        validateResponseWithFilter(pipelineRuns, null);
+        validateResponseWithFilter(pipelineRuns);
     }
 
     @And("A specific build")
@@ -84,7 +84,7 @@ public class StepsIT {
     @And("User sees the carbon footprint of a specific build")
     public void userSeesTheCarbonFootprintOfASpecificBuild() {
         int pipelineRuns = AMOUNT_OF_PIPELINES * AMOUNT_OF_BRANCHES;
-        validateResponseWithFilter(pipelineRuns, null);
+        validateResponseWithFilter(pipelineRuns);
     }
 
     @And("A specific branch")
@@ -95,7 +95,7 @@ public class StepsIT {
     @And("User sees the carbon footprint of a specific branch")
     public void userSeesTheCarbonFootprintOfASpecificBranch() {
         int pipelineRuns = AMOUNT_OF_PIPELINES * AMOUNT_OF_BUILDS;
-        validateResponseWithFilter(pipelineRuns, null);
+        validateResponseWithFilter(pipelineRuns);
     }
 
     private Map<String, String> getQueryParamsFromMetaBuilder() {
@@ -134,7 +134,7 @@ public class StepsIT {
     }
 
 
-    private void validateResponseWithFilter(int pipelineRuns, Integer price) {
+    private void validateResponseWithFilter(int pipelineRuns) {
         int runtimeSeconds = PIPELINE_DURATION_MINUTES * 60 * pipelineRuns;
         float joules = runtimeSeconds * JOULES;
         BigDecimal runtimeInHours = MathUtils.calculateRuntimeInHours(runtimeSeconds);
@@ -154,22 +154,9 @@ public class StepsIT {
         assertEquals(prettyPrintBigDecimal(co2ProducingPerRunGr), jsonPath.get("co2ProducingPerRunGr"));
         assertEquals(prettyPrintBigDecimal(co2ProducingPerHourGr), jsonPath.get("co2ProducingPerHourGr"));
         assertEquals(prettyPrintUtilization(BigDecimal.valueOf(UTILIZATION)), jsonPath.get("cpuUtilization"));
-        if (price != null) {
-            BigDecimal priceBigDecimal = BigDecimal.valueOf(price);
-            BigDecimal priceTotal = MathUtils.calculatePriceOfKwh(kwhUsed, priceBigDecimal);
-            BigDecimal pricePerRun = MathUtils.calculatePriceOfKwh(kwhPerPipeline, priceBigDecimal);
-            BigDecimal pricePerHour = MathUtils.calculatePriceOfKwh(kwh, priceBigDecimal);
-            assertEquals(prettyPrintBigDecimal(priceTotal), jsonPath.get("priceTotal"));
-            assertEquals(prettyPrintBigDecimal(pricePerRun), jsonPath.get("pricePerRun"));
-            assertEquals(prettyPrintBigDecimal(pricePerHour), jsonPath.get("pricePerHour"));
-        } else {
-            assertNull(jsonPath.get("priceTotal"));
-            assertNull(jsonPath.get("pricePerHour"));
-            assertNull(jsonPath.get("pricePerRun"));
-        }
     }
 
-    private void validateResponseAll(int pipelineRuns, Integer price) {
+    private void validateResponseAll(int pipelineRuns) {
         int runtimeSeconds = PIPELINE_DURATION_MINUTES * 60 * pipelineRuns;
         float joules = runtimeSeconds * JOULES;
         BigDecimal runtimeInHours = MathUtils.calculateRuntimeInHours(runtimeSeconds);
@@ -186,12 +173,6 @@ public class StepsIT {
         assertNull(jsonPath.get("co2ProducingPerRunGr"));
         assertNull(jsonPath.get("co2ProducingPerHourGr"));
         assertEquals(prettyPrintUtilization(BigDecimal.valueOf(UTILIZATION)), jsonPath.get("cpuUtilization"));
-        if (price != null) {
-            BigDecimal priceTotal = MathUtils.calculatePriceOfKwh(kwhUsed, BigDecimal.valueOf(price));
-            assertEquals(prettyPrintBigDecimal(priceTotal), jsonPath.get("priceTotal"));
-        } else {
-            assertNull(jsonPath.get("priceTotal"));
-        }
     }
 
 }

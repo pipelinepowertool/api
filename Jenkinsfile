@@ -15,7 +15,7 @@ pipeline {
         }
         sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} docker.io"
         sh "docker buildx use raspberry-builder"
-        sh "docker buildx build --platform='linux/arm64' -f src/main/docker/Dockerfile.native-micro -t sdenboer/pipelinepowertool-api ."
+        sh "docker build --platform='linux/arm64' -f src/main/docker/Dockerfile.native-micro -t sdenboer/pipelinepowertool-api ."
         sh "docker push sdenboer/pipelinepowertool-api"
       }
     }

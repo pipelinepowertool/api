@@ -28,9 +28,9 @@ public class CalculatorService {
     @Inject
     CarbonIntensityService carbonIntensityService;
 
-    public Uni<PowerUsageResponse> getPowerUsage(JenkinsMetadata jenkinsMetadata, String countryCode, Float price) {
+    public Uni<PowerUsageResponse> getPowerUsage(JenkinsMetadata jenkinsMetadata, String countryCode) {
         CompletableFuture<PowerUsageResponse> powerUsageResponseInFuture = elasticSearchService.aggregate(jenkinsMetadata).
-                thenApply(aggregate -> createPowerUsageResponse(jenkinsMetadata, aggregate, countryCode, price))
+                thenApply(aggregate -> createPowerUsageResponse(jenkinsMetadata, aggregate, countryCode))
                 .whenComplete((r, t) -> {
                     if (t != null) {
                         LOG.error("Something went wrong", t);
@@ -39,7 +39,7 @@ public class CalculatorService {
         return Uni.createFrom().completionStage(powerUsageResponseInFuture);
     }
 
-    private PowerUsageResponse createPowerUsageResponse(JenkinsMetadata jenkinsMetadata, DatabaseAggregationResponse databaseAggregationResponse, String countryCode, Float price) {
+    private PowerUsageResponse createPowerUsageResponse(JenkinsMetadata jenkinsMetadata, DatabaseAggregationResponse databaseAggregationResponse, String countryCode) {
         long pipelineRuns = databaseAggregationResponse.getPipelineRuns();
         long runtimeInSeconds = databaseAggregationResponse.getRuntime();
         BigDecimal utilization = databaseAggregationResponse.getUtilization();
@@ -54,32 +54,19 @@ public class CalculatorService {
         BigDecimal co2ProducedTotalGr = MathUtils.calculateCo2ProducedTotal(kwhUsed, carbonIntensity);
 
         PowerUsageResponse powerUsageResponse = new PowerUsageResponse()
-                .powerUsageKwh(prettyPrintBigDecimal(kwhUsed))
-                .co2ProducedTotalGr(prettyPrintBigDecimal(co2ProducedTotalGr))
+                .kwhTotal(prettyPrintBigDecimal(kwhUsed))
+                .co2Total(prettyPrintBigDecimal(co2ProducedTotalGr))
                 .cpuUtilization(prettyPrintUtilization(utilization))
                 .pipelineRuns(String.valueOf(pipelineRuns))
-                .runtimeSeconds(String.valueOf(runtimeInSeconds));
-
-        if (price != null) {
-            BigDecimal priceBigDecimal = BigDecimal.valueOf(price);
-            BigDecimal priceTotal = MathUtils.calculatePriceOfKwh(co2ProducedTotalGr, priceBigDecimal);
-            powerUsageResponse.priceTotal(prettyPrintBigDecimal(priceTotal));
-        }
+                .runtime(String.valueOf(runtimeInSeconds));
 
         if (jenkinsMetadata.getJob() != null) {
             BigDecimal kwhPerPipeline = MathUtils.calculateKwhPerPipeline(kwhUsed, pipelineRuns);
             BigDecimal co2ProducingPerRunGr = MathUtils.calculateCo2ProducingPerRun(kwhPerPipeline, carbonIntensity);
             BigDecimal co2ProducingPerHourGr = MathUtils.calculateCo2ProducingPerHour(kwh, carbonIntensity);
             powerUsageResponse = powerUsageResponse
-                    .co2ProducingPerRunGr(prettyPrintBigDecimal(co2ProducingPerRunGr))
-                    .co2ProducingPerHourGr(prettyPrintBigDecimal(co2ProducingPerHourGr));
-            if (price != null) {
-                BigDecimal priceBigDecimal = BigDecimal.valueOf(price);
-                BigDecimal pricePerRun = MathUtils.calculatePriceOfKwh(kwhPerPipeline, priceBigDecimal);
-                BigDecimal pricePerHour = MathUtils.calculatePriceOfKwh(kwh, priceBigDecimal);
-                powerUsageResponse.pricePerRun(prettyPrintBigDecimal(pricePerRun))
-                        .pricePerHour(prettyPrintBigDecimal(pricePerHour));
-            }
+                    .co2PerRun(prettyPrintBigDecimal(co2ProducingPerRunGr))
+                    .co2PerHour(prettyPrintBigDecimal(co2ProducingPerHourGr));
         }
 
         return powerUsageResponse;
