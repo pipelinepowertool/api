@@ -6,8 +6,7 @@ pipeline {
     stage('Maven build artifact') {
       agent {
             docker {
-              image 'sdenboer/pipelinepowertool-maven-alpine-dind'
-              args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+              image 'maven:3.9-eclipse-temurin-17-alpine'
               reuseNode true
             }
       }
