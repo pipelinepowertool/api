@@ -1,6 +1,6 @@
 pipeline {
   agent {
-      label agent3
+      label 'agent3'
   }
   stages {
     stage('Maven build artifact') {
