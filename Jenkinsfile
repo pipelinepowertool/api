@@ -1,7 +1,5 @@
 pipeline {
-  agent {
-    label 'agent3'
-  }
+  agent any
   stages {
     stage('Maven build artifact') {
       agent {
@@ -12,9 +10,8 @@ pipeline {
           }
       }
       steps {
-        pipelinePowerToolInitiator()
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
-             sh "mvn -s $MAVEN_SETTINGS -U -DskipTests=true package -Dnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true"
+             sh "mvn -s $MAVEN_SETTINGS -U -DskipTests=true package -Dnative -Dquarkus.native.container-build=true -Dquarkus.native.builder=quay.io/quarkus/23.0.1.2-Final-java17-arm64"
         }
       }
     }
