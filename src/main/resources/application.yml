@@ -26,8 +26,8 @@ quarkus:
     additional-build-args: --initialize-at-run-time=org.apache.http.impl.auth.NTLMEngineImpl
     resources:
       includes: certs/http_ca.crt
-  container-image:
-    build: true
+#  container-image:
+#    build: true
 
 api:
   elasticsearch:
