@@ -65,15 +65,20 @@ public class FakeDataGenerator {
         for (int i = 0; i < amountPipelines; ++i) {
             String job = "pipeline" + i;
             int randomNumber = (int) getRandomNumber(0, 4);
-            List<String> branches = switch (randomNumber) {
-                case 0 -> List.of("master", "dev");
-                case 1 -> List.of("master");
-                default -> {
+            List<String> branches;
+            switch (randomNumber) {
+                case 0:
+                    branches = List.of("master", "dev");
+                    break;
+                case 1:
+                    branches = List.of("master");
+                    break;
+                default:
                     ArrayList<String> objects = new ArrayList<>();
                     objects.add(null);
-                    yield objects;
-                }
-            };
+                    branches = objects;
+                    break;
+            }
             OffsetDateTime pipelineEnd = getRandomDateTime();
             int randomDuration = (int) getRandomNumber(1, 50);
             OffsetDateTime pipelineStart = pipelineEnd.minusMinutes(randomDuration);
