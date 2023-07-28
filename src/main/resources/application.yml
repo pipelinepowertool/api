@@ -21,13 +21,16 @@ quarkus:
         PipelinePowerToolCalculatorAPI_yml:
           base-package: com.pipelinepowertool.api
           mutiny: true
-  native:
-    container-build: true
-    additional-build-args: --initialize-at-run-time=org.apache.http.impl.auth.NTLMEngineImpl
-    resources:
-      includes: certs/http_ca.crt
-#  container-image:
-#    build: true
+#  native:
+#    container-build: true
+#    additional-build-args: --initialize-at-run-time=org.apache.http.impl.auth.NTLMEngineImpl
+#    resources:
+#      includes: certs/http_ca.crt
+  container-image:
+    group: sdenboer
+    name: pipelinepowertool-api
+  jib:
+    platforms: linux/arm64/v8
 
 api:
   elasticsearch:

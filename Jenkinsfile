@@ -10,20 +10,16 @@ pipeline {
           }
       }
       steps {
+        pipelinePowerToolInitiator()
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
-             sh "mvn -s $MAVEN_SETTINGS -U package -DskipTests=true -Dnative -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.0.0.2-Final-java11-arm64"
+             sh "mvn -s $MAVEN_SETTINGS -U package -Dnative -Dquarkus.container-image.push=true -Dquarkus.container-image.registry=registry.hub.docker.com -Dquarkus.jib.base-registry-username=${DOCKER_USER} -Dquarkus.jib.base-registry-password=${DOCKER_PASS}"
         }
       }
     }
-    stage('Release image') {
-      agent {
-        label 'agent3'
-      }
-      steps {
-        sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} docker.io"
-        sh "docker build -f src/main/docker/Dockerfile.native-micro -t sdenboer/pipelinepowertool-api ."
-        sh "docker push sdenboer/pipelinepowertool-api"
-      }
+  }
+  post {
+    always {
+      pipelinePowerToolElasticPublisher(userName: "elastic", password: "WYVI+2L0ZjI3n11PjTNP", hostName: "192.168.1.163", port: 9200)
     }
   }
 }
