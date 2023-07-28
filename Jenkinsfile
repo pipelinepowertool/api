@@ -3,7 +3,11 @@ pipeline {
   stages {
     stage('Maven build artifact') {
       agent {
-          label 'agent1 || agent2'
+          docker {
+            image 'sdenboer/pipelinepowertool-maven-alpine-dind'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+            reuseNode true
+          }
       }
       steps {
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
