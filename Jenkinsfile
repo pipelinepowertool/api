@@ -11,8 +11,7 @@ pipeline {
       }
       steps {
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
-             sh "./mvnw -s $MAVEN_SETTINGS dependency:resolve"
-             sh "./mvnw package -DskipTests=true -Dnative -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.0.0.2-Final-java11-arm64"
+             sh "mvn -s $MAVEN_SETTINGS -U package -DskipTests=true -Dnative -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.0.0.2-Final-java11-arm64"
         }
       }
     }
