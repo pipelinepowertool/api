@@ -13,7 +13,7 @@ pipeline {
       }
       steps {
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
-          sh "mvn -s $MAVEN_SETTINGS -U package -DskipTests=true -Dnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true"
+          sh "./mvnw -s $MAVEN_SETTINGS -U package -DskipTests=true -Dnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true"
         }
       }
     }
