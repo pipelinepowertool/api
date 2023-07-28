@@ -107,16 +107,16 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <id>central</id>
-      <url>https://repo1.maven.org/maven2</url>
-    </repository>
-    <repository>
-      <id>github</id>
-      <url>https://maven.pkg.github.com/pipelinepowertool/common</url>
-    </repository>
-  </repositories>
+<!--  <repositories>-->
+<!--    <repository>-->
+<!--      <id>central</id>-->
+<!--      <url>https://repo1.maven.org/maven2</url>-->
+<!--    </repository>-->
+<!--    <repository>-->
+<!--      <id>github</id>-->
+<!--      <url>https://maven.pkg.github.com/pipelinepowertool/common</url>-->
+<!--    </repository>-->
+<!--  </repositories>-->
   <build>
     <plugins>
       <plugin>
