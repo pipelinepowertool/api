@@ -3,15 +3,12 @@ pipeline {
   stages {
     stage('Maven build artifact') {
       agent {
-          docker {
-            image 'sdenboer/pipelinepowertool-maven-alpine-dind'
-            args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
-            reuseNode true
-          }
+          label 'agent1 || agent2'
       }
       steps {
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
-             sh "mvn -s $MAVEN_SETTINGS -U -DskipTests=true package -Dnative -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:23.0.1.2-Final-java17-arm64"
+             sh "./mvnw -s $MAVEN_SETTINGS dependency:resolve"
+             sh "./mvnw package -DskipTests=true -Dnative -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.0.0.2-Final-java11-arm64"
         }
       }
     }
