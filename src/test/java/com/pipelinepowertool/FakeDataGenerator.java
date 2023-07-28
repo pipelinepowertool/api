@@ -82,7 +82,7 @@ public class FakeDataGenerator {
             OffsetDateTime pipelineEnd = getRandomDateTime();
             int randomDuration = (int) getRandomNumber(1, 50);
             OffsetDateTime pipelineStart = pipelineEnd.minusMinutes(randomDuration);
-            double joules = getRandomNumber(5, 10);
+            double joules = getRandomNumber(30, 50);
 
             for (String branch : branches) {
                 int amountBuilds = (int) getRandomNumber(10, 1200);
