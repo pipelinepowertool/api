@@ -3,15 +3,15 @@ pipeline {
   stages {
     stage('Maven build artifact') {
       agent {
-        docker {
-          image 'maven:3.9.3-eclipse-temurin-17'
-          args '-v $HOME/.m2:/root/.m2:z -v /var/run/docker.sock:/var/run/docker.sock -u root'
-          reuseNode true
-        }
+        label 'agent1 || agent2'
       }
       steps {
         agent {
-          label 'agent1 || agent2'
+          docker {
+            image 'maven:3.9.3-eclipse-temurin-17'
+            args '-v $HOME/.m2:/root/.m2:z -v /var/run/docker.sock:/var/run/docker.sock -u root'
+            reuseNode true
+          }
         }
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
           sh "mvn -s $MAVEN_SETTINGS clean install"
