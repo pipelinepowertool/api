@@ -10,7 +10,7 @@ pipeline {
         }
       }
       steps {
-        node('agent1' || 'agent2') {
+        node('agent1 || agent2') {
           configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
             sh "mvn -s $MAVEN_SETTINGS -U clean install"
           }
