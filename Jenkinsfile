@@ -24,9 +24,4 @@ pipeline {
       }
     }
   }
-  post {
-    always {
-      pipelinePowerToolElasticPublisher(userName: "elastic", password: "WYVI+2L0ZjI3n11PjTNP", hostName: "192.168.1.163", port: 9200)
-    }
-  }
 }
