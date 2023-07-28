@@ -9,7 +9,7 @@ public class ElasticSearchTestResource implements QuarkusTestResourceLifecycleMa
 
     public static ElasticsearchContainer container = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:8.8.2")
             .withExposedPorts(9200)
-            .withEnv("xpack.security.enabled", "false");
+            .withEnv(Map.of("xpack.security.enabled", "false", "ES_JAVA_OPTS", "Xms512m -Xmx512m"));
 
     @Override
     public Map<String, String> start() {
