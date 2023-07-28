@@ -4,7 +4,7 @@ pipeline {
     stage('Maven build artifact') {
       agent {
           docker {
-            image 'sdenboer/pipelinepowertool-maven-arm64-dind:latest'
+            image 'sdenboer/pipelinepowertool-maven-alpine-dind'
             args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
             reuseNode true
           }
