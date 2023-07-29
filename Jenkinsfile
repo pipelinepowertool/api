@@ -12,7 +12,7 @@ pipeline {
       steps {
 //         pipelinePowerToolInitiator()
         configFileProvider([configFile(fileId: 'ce7257b3-97e2-4486-86ee-428f65c0ff26', variable: 'MAVEN_SETTINGS')]) {
-          sh "mvn -s $MAVEN_SETTINGS -U package -Dnative -Dquarkus.container-image.push=true -Dquarkus.container-image.registry=registry.hub.docker.com -Dquarkus.jib.base-registry-username=${DOCKER_USER} -Dquarkus.jib.base-registry-password=${DOCKER_PASS}"
+          sh "mvn -s $MAVEN_SETTINGS -U package -Dquarkus.container-image.push=true -Dquarkus.container-image.registry=registry.hub.docker.com -Dquarkus.jib.base-registry-username=${DOCKER_USER} -Dquarkus.jib.base-registry-password=${DOCKER_PASS}"
         }
       }
     }
