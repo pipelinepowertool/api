@@ -44,6 +44,7 @@ public class StepsIT {
     @When("User requests the data")
     public void userRequestsTheData() {
         String uri = uriBuilder.toString();
+        context.request = uri;
         context.response = given()
                 .config(config().jsonConfig(jsonConfig().numberReturnType(BIG_DECIMAL)))
                 .pathParams(getQueryParamsFromMetaBuilder())
@@ -83,7 +84,10 @@ public class StepsIT {
 
     @And("User sees the carbon footprint of a specific build")
     public void userSeesTheCarbonFootprintOfASpecificBuild() {
-        int pipelineRuns = AMOUNT_OF_PIPELINES * AMOUNT_OF_BRANCHES;
+        int pipelineRuns = 1;
+        if (!context.request.contains("branch")) {
+            pipelineRuns *= AMOUNT_OF_BRANCHES;
+        }
         validateResponseWithFilter(pipelineRuns);
     }
 
@@ -94,8 +98,7 @@ public class StepsIT {
 
     @And("User sees the carbon footprint of a specific branch")
     public void userSeesTheCarbonFootprintOfASpecificBranch() {
-        int pipelineRuns = AMOUNT_OF_PIPELINES * AMOUNT_OF_BUILDS;
-        validateResponseWithFilter(pipelineRuns);
+        validateResponseWithFilter(AMOUNT_OF_BUILDS);
     }
 
     private Map<String, String> getQueryParamsFromMetaBuilder() {

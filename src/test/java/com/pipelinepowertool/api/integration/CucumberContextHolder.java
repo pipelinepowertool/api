@@ -8,5 +8,7 @@ public class CucumberContextHolder {
 
     Response response;
 
+    String request;
+
 
 }
